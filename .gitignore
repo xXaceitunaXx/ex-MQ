@@ -21,3 +21,6 @@ ex_mq-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Designs and stuff
+/diagrams/
