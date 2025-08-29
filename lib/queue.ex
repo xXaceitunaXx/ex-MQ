@@ -1,14 +1,23 @@
-defmodule Queue do
+defmodule ExMq.Queue do
   use GenServer
 
-  @type queue :: list(String)
   defstruct [:name, :queue]
 
   def start_link(name) do
-    GenServer.start_link(__MODULE__, name, name: String.to_atom(name))
+    GenServer.start_link(__MODULE__, name, name: name)
   end
 
   def init(name), do: {:ok, %{name: name, queue: Qex.new}}
+
+  # API
+
+  def enqueue(name, message), do: GenServer.call(name, {:enqueue, message})
+
+  def dequeue(name), do: GenServer.call(name, :dequeue)
+
+  def peek(name), do: GenServer.call(name, :peek)
+
+  # Handlers
 
   def handle_call({:enqueue, message}, _from, state) do
     n_q = Qex.push state.queue, message
